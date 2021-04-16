@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [gps_power.PrjPcb]
+   Generated File[gps_power.TXT]
+   Generated File[gps_power.LDP]
+   Generated File[gps_power.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 6:46:45 PM On 2021-04-11

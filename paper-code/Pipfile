@@ -1,0 +1,9 @@
+[packages]
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+dateparser = "*"
+scikit-learn = "*"
+
+[requires]
+python_version = "3"

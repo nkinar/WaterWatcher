@@ -1,0 +1,23 @@
+.ui.header {
+    padding-top: 30px;
+    padding-right: 30px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+
+#turbidity-chart {
+    max-width: 650px;
+    margin: 35px auto;
+}
+
+#tds-chart {
+    max-width: 650px;
+    margin: 35px auto;
+}
+
+#temp-chart {
+    max-width: 650px;
+    margin: 35px auto;
+}
+
+#mapid { height: 400px; }

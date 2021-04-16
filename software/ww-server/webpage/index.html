@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WaterWatcher</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
+		<link rel="stylesheet" href="css/ww.css">
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+		<script type="module" src="js/ww.js"></script>
+	</head>
+	<body>
+	<main class="ui page grid">
+		<div class="row">
+			<div class="column">
+				<h1 class="ui header">WaterWatcher Dashboard</h1>
+				<div class="ui small image">
+					<img src="img/ww.png">
+				</div>
+				<p>Live data from the deployment of an electronic system to measure water quality.
+				</p>
+				<div class="ui divider"></div>
+
+				<div class="ui text container segment">
+					<h2 class="ui header">Turbidity</h2>
+					<div id="turbidity-chart">
+					</div>
+				</div>
+
+				<div class="ui text container segment">
+					<h2 class="ui header">Total Dissolved Solids (TDS)</h2>
+					<div id="tds-chart">
+					</div>
+				</div>
+
+				<div class="ui text container segment">
+					<h2 class="ui header">Temperature</h2>
+					<div id="temp-chart">
+					</div>
+				</div>
+
+				<div class="ui text container segment">
+					<h2 class="ui header">GPS Location</h2>
+					<div id="mapid">
+					</div>
+				</div>
+
+				<footer class="footer">
+					<p>
+						A project by Nicholas J. Kinar & Markus Brinkmann at the Global Institute for Water
+						Security and the Centre for Hydrology at the University of Saskatchewan.
+					</p>
+				</footer>
+
+			</div>
+		</div>
+	</main>
+	</body>
+</html>

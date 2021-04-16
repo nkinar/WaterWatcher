@@ -1,0 +1,21 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: smart-water-sensor.PcbDoc   2020-05-12  2:19:48 PM
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : smart-water-sensor.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      15mil (0.381mm)                                           Round             463       PTH        0.00inch (0.00mm)
+T2      39mil (1mm)                                               Round             34        PTH        0.00inch (0.00mm)
+T3      42mil (1.067mm)                                           Round             16        PTH        0.00inch (0.00mm)
+T4      43mil (1.09mm)                                            Round             9         PTH        0.00inch (0.00mm)
+T5      59mil (1.5mm)                                             Round             2         PTH        0.00inch (0.00mm)
+T6      63mil (1.6mm)                                             Round             8         PTH        0.00inch (0.00mm)
+T7      130mil (3.3mm)                                            Round             4         PTH        0.00inch (0.00mm)
+T8      59mil (1.5mm)                                             Round             2         NPTH       0.00inch (0.00mm)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              538
+
+Total Processing Time (hh:mm:ss) : 00:00:00
