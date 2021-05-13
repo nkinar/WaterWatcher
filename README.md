@@ -27,9 +27,7 @@ To download STEP files for the mechanical design (also required):
 
 * Windows OS and Autodesk Inventor installed and activated
 * Windows OS that supports VBScript (most versions of Windows do)
-* Chrome desktop browser
-* Selenium
-* Selenium browser driver installed on the path
+* Desktop browser
 * Cmder - <https://cmder.net/>
 
 To program the microcontroller and to compile the device code,
@@ -43,11 +41,9 @@ The shell script `run.sh` in the `paper-code` directory will automatically
 create graphs in the paper.
 
 The shell script `run.sh` in the `mechanical/download-files` directory
-will download STEP files and convert the files for use in the mechanical assembly.  
-As listed above, Windows and a licensed installation of Autodesk Inventor is required for this process.  The download can take time; please be patient.
-The Chrome browser will be used.  The purpose of the
-script is to help the user download the files and some manual downloads might
-still be necessary.
+will convert STEP files for use in Inventor.  Check the
+/mechanical/download-files/downloaded/files-download.txt file for further
+details on which parts to download.
 
 The part files are downloaded from McMaster-Carr (<https://www.mcmaster.com/>)
 and these downloaded files are for your own use as per the distribution
@@ -60,17 +56,21 @@ access to a Windows machine, please contact the authors.
 
 When opening the assembly for the first time in Inventor (`assembly-with-lid.iam`)
 some benign errors or dialog boxes might appear indicating that files
-are not the same as originally referenced.  When asked "Do you really want to use the resolved document?" click "Yes."  When asked "Would you like to update the assembly now?" click "Yes" and then save the assembly.
+are not the same as originally referenced.  
+When asked "Do you really want to use the resolved document?" click "Yes."  
+When asked "Would you like to update the assembly now?" click "Yes" and then save the assembly.
 
 Click on "Accept" if a dialog box indicates that there are errors.  When saving the assembly, click on the "Yes to All" button and then "OK."
 
-If some files are still missing, re-run the shell script `run.sh` to ensure
-that everything was downloaded.  The `files-download.txt` file with the
-download links might have to be modified as required in the `mechanical/download-files` directory.  This file is only provided to be potentially useful.
+The `files-download.txt` file with the
+download links might have to be modified as required in
+the `mechanical/download-files` directory.
+This file is only provided to be potentially useful.
 
 ## FILES
 
-Bolded entries in the table indicate parent directories. Non-bolded entries indicate subdirectories.
+Bolded entries in the table indicate parent directories.
+Non-bolded entries indicate subdirectories.
 
 | Directory   |     Description  |
 |----------|:-------------:|

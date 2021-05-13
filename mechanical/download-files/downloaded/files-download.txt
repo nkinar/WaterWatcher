@@ -1,0 +1,32 @@
+Download STEP files corresponding to the parts in the ./downloaded directory.
+The files have to be manually downloaded from the website.
+
+https://www.mcmaster.com/
+
+https://www.mcmaster.com/90107A029/
+https://www.mcmaster.com/90107A127/
+https://www.mcmaster.com/90116A169/
+https://www.mcmaster.com/90715A125/
+https://www.mcmaster.com/90965A130/
+https://www.mcmaster.com/92153A418/
+https://www.mcmaster.com/92398A116/
+https://www.mcmaster.com/92844A135/
+https://www.mcmaster.com/93190A540/
+https://www.mcmaster.com/93190A542/
+https://www.mcmaster.com/93190A546
+https://www.mcmaster.com/93190A547/
+https://www.mcmaster.com/93190A550/
+https://www.mcmaster.com/93190A636/
+https://www.mcmaster.com/93190A638/
+https://www.mcmaster.com/93190A640/
+https://www.mcmaster.com/94150A325/
+https://www.mcmaster.com/94205A220/
+https://www.mcmaster.com/94205A230/
+https://www.mcmaster.com/94530A113/
+https://www.mcmaster.com/94804A029/
+https://www.mcmaster.com/98164A230/
+https://www.mcmaster.com/98690A111/
+https://www.mcmaster.com/94150A335/
+https://www.mcmaster.com/94205A220
+
+
