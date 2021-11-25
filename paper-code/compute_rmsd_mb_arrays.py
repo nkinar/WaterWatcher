@@ -1,12 +1,26 @@
 import numpy as np
 from get_size import length
-from sklearn.metrics import mean_squared_error
 import datetime
 import scipy.interpolate as interp
 
 
+def compute_pd(known, model):
+    out = ((known-model)/known) * 100
+    return out
+
+
 def compute_rmsd(y_actual, y_predicted):
-    return np.sqrt(mean_squared_error(y_actual, y_predicted))
+    """
+    Compute the RMSD
+    :param y_actual:
+    :param y_predicted:
+    :return:
+    """
+    n = length(y_actual)
+    if n != length(y_predicted):
+        raise ValueError('Both input arrays must have the same length')
+    out = np.sqrt(np.nansum((y_actual - y_predicted)**2) / float(n))
+    return out
 
 
 def compute_mb(known, model):
@@ -19,26 +33,30 @@ def compute_mb(known, model):
     k = np.asarray(known)
     m = np.asarray(model)
     n = k.size
-    term = np.average(m-k)
+    term = np.nanmean(m-k)
     return term
 
 
 def _convert_to_timestamp(x):
     out = []
-    for k in x:
-        out.append(k.timestamp())
+    for k in range(length(x)):
+        out.append(x[k].timestamp())
     return np.asarray(out)
 
 
-def compute_rmsd_mb_arrays(x1, y1, x2_known, y2_known):
+def compute_rmsd_mb_arrays(x1_in, y1_in, x2_known_in, y2_known_in):
     """
     Compute the RMSD and MB arrays
-    :param x1:                  as the dataset x to be compared (timestep)
-    :param y1:                  as the dataset y to be compared (values)
-    :param x2_known:            as the known dataset x to be compared (timestep)
-    :param y2_known:            as the known dataset y to be compared (values)
+    :param x1_in:                  as the dataset x to be compared (timestep)
+    :param y1_in:                  as the dataset y to be compared (values)
+    :param x2_known_in:            as the known dataset x to be compared (timestep)
+    :param y2_known_in:            as the known dataset y to be compared (values)
     :return:
     """
+    x1 = np.array(x1_in, ndmin=1)
+    y1 = np.array(y1_in, ndmin=1)
+    x2_known = np.array(x2_known_in, ndmin=1)
+    y2_known = np.array(y2_known_in, ndmin=1)
     n1 = length(x1)
     n2 = length(x2_known)
     if n1 != length(y1):
@@ -56,7 +74,7 @@ def compute_rmsd_mb_arrays(x1, y1, x2_known, y2_known):
     y1_interp = fx1(xsamp)
     y2_interp = fx2(xsamp)
     mb = compute_mb(y2_interp, y1_interp)
-    rmse = compute_rmse(y2_interp, y1_interp)
+    rmse = compute_rmsd(y2_interp, y1_interp)
     return rmse, mb
 
 

@@ -17,6 +17,7 @@ from normalize import normalize_matrix
 from semivariogram import semivariogram_xz
 from constant_labels import create_label, temp_label
 from addtick import addtick_x
+from number_helper import get_closest_date
 
 
 def load_precip_data():
@@ -332,10 +333,6 @@ def run_analysis_calibrate(show=False):
             plt.show(block=True)
 
 
-############################################################
-# Data Processing
-############################################################
-
 def run_process_data(show=False):
     # create the object to deal with the data
     wwp = WaterWatcherProcess()
@@ -361,6 +358,22 @@ def run_process_data(show=False):
     print('min bat = {:.4} V'.format(min_bat))
     print('max bat = {:.4} V'.format(max_bat))
     print('av_current = {:.4} mA'.format(av_current))
+
+    # load in the comparison data and the m-slope of the line used to convert TSS into turbidity
+    d_tss_turbidity = pickle.load(open(FN_TSS_TURB_COEFF, "rb"))
+    m_tss_turbidity = d_tss_turbidity[TSS_TURB_M]
+    comp_data = genfromtxt(fn_comparison_wq, delimiter=',', dtype=str)
+    comp_data_date = [dateparser.parse(i) for i in comp_data[1:, 0]]    # date as col 0
+    comp_data_tds_ppm = np.asarray(comp_data[1:, 1], dtype=float)       # TDS (ppm) as col 1
+    comp_data_tss = np.asarray(comp_data[1:, 2], dtype=float)           # TSS (mg/L) as col 2
+    # convert TSS into turbidity (NTU)
+    comp_data_turbidity_ntu = m_tss_turbidity * comp_data_tss
+
+    # min and max values
+    min_turbidity = d_tss_turbidity[MIN_TURBIDITY_ACTUAL]
+    max_turbidity = d_tss_turbidity[MAX_TURBIDITY_ACTUAL]
+    min_tds = d_tss_turbidity[MIN_TDS_ACTUAL]
+    max_tds = d_tss_turbidity[MAX_TURBIDITY_ACTUAL]
 
     #############################################################################
     # Turbidity and TDS data
@@ -419,10 +432,17 @@ def run_process_data(show=False):
     # Turbidity plot
     fig1 = plt.figure(figsize=FIG_SIZE_TIME_PLOTS)
     ax1 = plt.subplot(611)
-    plt.plot(dut_time_p0, turbidity_series, color='cornflowerblue')
+
+    ax1.hlines(y=min_turbidity, xmin=dut_time_p0[0], xmax=dut_time_p0[-1], color='gray', label='Min/Max Measured')
+    ax1.hlines(y=max_turbidity, xmin=dut_time_p0[0], xmax=dut_time_p0[-1], color='gray')
+
+    plt.plot(dut_time_p0, turbidity_series, color='cornflowerblue', label='Automated')
+    plt.plot(comp_data_date, comp_data_turbidity_ntu, marker='o', linestyle='', label='Manual Measured', color='darkviolet')
+    plt.ylim([-200, 3000])
     plt.ylabel('Turbidity (NTU)')
     turn_ticklabels_off_xaxis()
     ax1.set_title('(a)', loc='right', y=0.75, bbox=bbox)
+    ax1.legend(loc='upper left')
 
     # Spectrogram of turbidity plot
     ax2 = plt.subplot(612)
@@ -438,7 +458,12 @@ def run_process_data(show=False):
     rm = ~np.isnan(tds_series)
     dut_time_p0_tds_p = np.asarray(dut_time_p0_tds)[rm]
     tds_series_p = tds_series[rm]
-    plt.plot(dut_time_p0_tds_p, tds_series_p, color='cornflowerblue')
+    # min and max lines
+    ax3.hlines(y=min_tds, xmin=dut_time_p0_tds_p[0], xmax=dut_time_p0_tds_p[-1], color='gray')
+    ax3.hlines(y=max_tds, xmin=dut_time_p0_tds_p[0], xmax=dut_time_p0_tds_p[-1], color='gray')
+
+    plt.plot(dut_time_p0_tds_p, tds_series_p, color='cornflowerblue', label='Automated')
+    plt.plot(comp_data_date, comp_data_tds_ppm, marker='o', linestyle='', label='Manual', color='darkviolet')
     turn_ticklabels_off_xaxis()
     plt.ylabel('TDS (ppm)')
     plt.ylim([0, 700])
@@ -487,9 +512,35 @@ def run_process_data(show=False):
     ax5.legend(loc='upper right')
     ax5temp.legend(loc='upper left')
 
-    # save out the figures
+    # save out the figure
     plt.savefig(FIG_FIELD, dpi=DPI)
     plt.show(block=False)
+
+    # TURBIDITY COMPARISONS
+    known_time_turbidity = comp_data_date[0]
+    known_turbidity = comp_data_turbidity_ntu[0]
+    close_time_turbidity, close_time_turbidity_indx = get_closest_date(known_time_turbidity, dut_time_p0)
+    ww_turbidity = turbidity_series[close_time_turbidity_indx]
+    mb_turbidity = compute_mb(known_turbidity, ww_turbidity)
+    mb_turbidity_all = compute_mb(known_turbidity * np.ones(length(turbidity_series)), turbidity_series)
+    rmsd_turbidity_all = compute_rmsd(known_turbidity * np.ones(length(turbidity_series)), turbidity_series)
+    print('-----Turbidity-----')
+    print('mb_turbidity sample = {:.2f} NTU'.format(mb_turbidity))
+    print('mb_turbidity all = {:.2f} NTU'.format(mb_turbidity_all))
+    print('rmsd_turbidity all = {:.2f} NTU'.format(rmsd_turbidity_all))
+
+    # TDS COMPARISONS
+    known_time_tds = comp_data_date[0]
+    known_tds = comp_data_tds_ppm[0]
+    close_time_tds, close_time_tds_indx = get_closest_date(known_time_tds, dut_time_p0_tds_p)
+    ww_tds = tds_series[close_time_tds_indx]
+    mb_tds = compute_mb(known_tds, ww_turbidity)
+    mb_tds_all = compute_mb(known_tds * np.ones(length(tds_series)), tds_series)
+    rmsd_tds_all = compute_rmsd(known_tds * np.ones(length(tds_series)), tds_series)
+    print('-----TDS-----')
+    print('mb_tds sample = {:.2f} ppm'.format(mb_tds))
+    print('mb_tds all = {:.2f} ppm'.format(mb_tds_all))
+    print('rmsd_tds all = {:.2f} ppm'.format(rmsd_tds_all))
 
     # #############################################################################
     # # Semivariogram
@@ -531,6 +582,49 @@ def run_process_data(show=False):
         plt.show(block=True)
 
 
+def obtain_tss_turbidity_relationship_and_tds(block):
+    data = genfromtxt(fn_turbidity_tss, delimiter=',', dtype=str)
+    turbidity_col = 2
+    tss_col = 3
+    tds_col = 4
+    turbidity = np.asarray(data[1:, turbidity_col], dtype=float)
+    tss = np.asarray(data[1:, tss_col], dtype=float)
+    tds = np.asarray(data[1:, tds_col], dtype=float)
+
+    min_turbidity = np.min(turbidity)
+    max_turbidity = np.max(turbidity)
+    min_tds = np.min(tds)
+    max_tds = np.max(tds)
+
+    x = tss
+    x = x[:, np.newaxis]
+    y = turbidity
+    # force the fit through zero since 0 NTU must coincide with 0 mg/L
+    m, _, _, _ = np.linalg.lstsq(x, y, rcond=None)
+    m = m.item()
+    xlin = np.linspace(0, np.max(tss))
+    t_y = m*xlin
+
+    dcoeff = {
+        TSS_TURB_M: m,
+        MIN_TURBIDITY_ACTUAL: min_turbidity,
+        MAX_TURBIDITY_ACTUAL: max_turbidity,
+        MIN_TDS_ACTUAL: min_tds,
+        MAX_TDS_ACTUAL: max_tds
+    }
+    with open(FN_TSS_TURB_COEFF, 'wb') as fpick:
+        pickle.dump(dcoeff, fpick)
+
+    plt.figure()
+    plt.plot(tss, turbidity, marker='o', linestyle='')
+    plt.plot(xlin, t_y)
+    plt.xlabel('TSS (mg/L)')
+    plt.ylabel('Turbidity (NTU)')
+    plt.show(block=block)
+# DONE
+
+
+
 #############################################################################
 
 
@@ -540,6 +634,7 @@ def main():
     use_ggplot_style()
 
     show = False
+    obtain_tss_turbidity_relationship_and_tds(show)
     run_analysis_calibrate(show)
     run_process_data(show)
 

@@ -167,7 +167,6 @@ void format_data_for_storage_and_send()
     String data_json, data_json_additional;
     data_json = format_data_json();
 
-    // TODO: this is commented out for now 
     printSerial("Writing text to file...");
     write_text_to_obs_file(data_json.c_str());
     printSerial("Done writing text to file.");

@@ -31,16 +31,25 @@ PYTHON_TIME_DATE_STR = '%d/%m/%Y %H:%M:%S'
 TURBIDITY_MODEL_OBJ = 'turbidity_model_p'
 TDS_MODEL_COEFF = 'model_tdsc'
 TDS_MODEL_INDICES = 'lst_index_tdsc'
+TSS_TURB_M = 'tss_turbidity_m'
+
+MIN_TURBIDITY_ACTUAL = 'min_turbidity'
+MAX_TURBIDITY_ACTUAL = 'max_turbidity'
+MIN_TDS_ACTUAL = 'min_tds'
+MAX_TDS_ACTUAL = 'max_tds'
 
 # Data file names
 fn_dut = '../data/calibration-data/NONAME_parsed.csv'
 fn_exosonde = '../data/calibration-data/KorEXO_Measurement_File_Export_021520_211205_parsed-same-cols.csv'
 fn_field_data = '../data/deployment/field-test.csv'
 fn_precip_data = '../data/deployment/weather-station-2020-june-july.csv'
+fn_turbidity_tss = '../data/ancillary/turbidity-and-tss-and-tds.csv'
+fn_comparison_wq = '../data/ancillary/water-sample-comparison.csv'
 
 # Output file names
 FN_CALIB_OUT = OUT_DIR + 'calib.txt'
 FN_CALIB_COEFF = OUT_DIR + 'calibration-coeff.pickle'
+FN_TSS_TURB_COEFF = OUT_DIR + 'tss-turbidity-coeff.pickle'
 
 # Figure names
 FIG_CALIB = FIGURE_DIR + 'calibration' + OUT_EXT
